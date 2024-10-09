@@ -120,8 +120,15 @@ workflow.add_edge(START, "agent")
 workflow.add_conditional_edges("agent", should_continue, ["tools", END])
 workflow.add_edge("tools", "agent")
 
+# Load the SVG image for the bot character
+bot_image_path = "assets/Rebecca_head.svg"
+
 # Streamlit interface for user input
-st.title("Loan Recommender Chatbot")
+st.title("Personal loan agent")
+
+# Display the bot's avatar above the title
+st.image(bot_image_path, use_column_width=False, width=100)  # Adjust width as needed
+st.markdown("### Rebecca")
 
 if 'chat_state' not in st.session_state:
     st.session_state['chat_state'] = {"messages": []}
@@ -143,4 +150,9 @@ if user_input:
         response = f"An error occurred: {e}"
         print("Error during tool call:", e)
     
-    st.markdown(f"Rebecca: {response}")
+    # Display bot's avatar near every response
+    cols = st.columns([1, 10])  # Set layout to have image and text
+    with cols[0]:
+        st.image(bot_image_path, use_column_width=False, width=50)
+    with cols[1]:
+        st.markdown(f"**Rebecca:** {response}")
